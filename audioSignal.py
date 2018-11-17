@@ -57,7 +57,7 @@ class AudioSignal:
     '''
     def getAudioSignalFrequency(self):
         try:
-            frequencySampling, audioSignal = wavfile.read(self.fileName)
+            self.frequencySampling, self.audioSignal = wavfile.read(self.fileName)
             return frequencySampling, audioSignal
         except:
             print("Unable to get frequency_sampling, audioSignal from " + self.fileName)
@@ -69,10 +69,9 @@ class AudioSignal:
     '''
     def getMFCCFeatures(self):
         try:
-            featuresMFCC = mfcc(self.audioSignal, self.frequencySampling)
-            print('\nMFCC:\nNumber of windows =', featuresMFCC.shape[0])
-            print('Length of each feature =', featuresMFCC.shape[1])
-            return featuresMFCC
+            self.featuresMFCC = mfcc(self.audioSignal, self.frequencySampling)
+            print('\nMFCC:\nNumber of windows =', self.featuresMFCC.shape[0])
+            print('Length of each feature =', self.featuresMFCC.shape[1])
         except:
             print("Could not get the mfcc features from file "+ self.fileName)
 
@@ -80,10 +79,9 @@ class AudioSignal:
     '''
     def getFilterBankFatures(self):
         try:
-            filterbankFeatures = logfbank(self.audioSignal, self.frequencySampling)
-            print('\nFilter bank:\nNumber of windows =', filterbankFeatures.shape[0])
-            print('Length of each feature =', filterbankFeatures.shape[1])
-            return filterbankFeatures
+            self.filterbankFeatures = logfbank(self.audioSignal, self.frequencySampling)
+            print('\nFilter bank:\nNumber of windows =', self.filterbankFeatures.shape[0])
+            print('Length of each feature =', self.filterbankFeatures.shape[1])
         except:
             print("Could not get filter bank features from file")
 
