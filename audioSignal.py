@@ -14,7 +14,7 @@ class AudioSignal:
         self.featuresMFCC = None
         self.filterbankFeatures = None
         self.signalPower = None
-        self.plotFlag = False
+        self.plotFlag = True
     
     '''
     @brief set the audio file name and directory (must be a .wav format)
@@ -58,7 +58,6 @@ class AudioSignal:
     def getAudioSignalFrequency(self):
         try:
             self.frequencySampling, self.audioSignal = wavfile.read(self.fileName)
-            return frequencySampling, audioSignal
         except:
             print("Unable to get frequency_sampling, audioSignal from " + self.fileName)
             return 
@@ -116,6 +115,7 @@ class AudioSignal:
         if(self.plotFlag):
             self.plotSignal('Frequency (kHz)', 'Signal power (dB)', 'Freq vs Power', 1000.0, lengthSignal, len_fts, 1, self.signalPower)
 
+
     '''
     @brief method to plot the audio signal
     '''
@@ -130,8 +130,6 @@ class AudioSignal:
         plt.title(pTitle)
         plt.show()
 
-    
-    
     '''
     @brief plot the mfcc features
     @param pFeaturesMFCC the mfcc features
