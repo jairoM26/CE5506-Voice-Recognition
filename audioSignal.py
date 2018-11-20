@@ -93,7 +93,17 @@ class AudioSignal:
         print('Signal duration:', round(self.audioSignal.shape[0] / 
         float(self.frequencySampling), 2), 'seconds')
 
-        self.audioSignal = self.audioSignal / np.power(2, 15)
+        from pydub import AudioSegment
+
+        def match_target_amplitude(sound, target_dBFS):
+            change_in_dBFS = target_dBFS - sound.dBFS
+            return sound.apply_gain(change_in_dBFS)
+
+        sound = AudioSegment.from_file(self.fileName, "wav")
+        normalized_sound = match_target_amplitude(sound, -20.0)
+        normalized_sound.export("./datos_normalizados/" + self.fileName.split("/")[-1], format="wav")
+        self.fileName = "./datos_normalizados/" + self.fileName.split("/")[-1]
+        self.getAudioSignalFrequency()
 
         #if(self.plotFlag):
         #   self.plotSignal('Frequency (kHz)', 'Signal power (dB)', 'Freq vs Power', 1000.0, lengthSignal, len_fts, 1, self.signalPower)
@@ -138,6 +148,7 @@ class AudioSignal:
         pFeaturesMFCC = self.featuresMFCC.T
         plt.matshow(pFeaturesMFCC)
         plt.title('MFCC Features')
+        plt.savefig("./images/"+ self.fileName.split("/")[-1].split(".")[0])
         plt.show()
 
     '''

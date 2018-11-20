@@ -7,7 +7,7 @@ sudo apt-get install python3-pip
 
 then you need to install the the following libraries with pip3
 ```
-pip3 install numpy matplotlib scipy python_speech_features
+pip3 install numpy matplotlib scipy python_speech_features pydub
 ```
 To run the progam:
 ```
