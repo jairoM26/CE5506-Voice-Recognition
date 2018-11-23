@@ -8,12 +8,14 @@ print(len(listOfFiles))
 
 listOfAudios = []
 for file in listOfFiles[:]:
-    print("file:  ", file)
+    print("FileName ", )    
     tmp = AudioSignal(file)
     tmp.normalizeEnergy() 
     tmp.signalFeatures(0.01, 0.025)
-    #tmp.pltoFilterBankFeatures()
-    #tmp.pltoMFCCFeatures()
+    tmp.plotSignal('Time (ms)', 'Amplitud', 'Audio Signal ' + tmp.fileName.split("/")[-1] , len(tmp.audioSignal), len(tmp.audioSignal), len(tmp.audioSignal), 0, tmp.audioSignal)
+    tmp.plotSignal('F(KHz)', 'Signal Power (db)', 'FFT ' + tmp.fileName.split("/")[-1], len(tmp.pow_frames), len(tmp.pow_frames), len(tmp.pow_frames), 1, tmp.pow_frames)
+    tmp.pltoFilterBankFeatures()
+    tmp.pltoMFCCFeatures()
     listOfAudios.append(tmp)
 
 print(len(listOfAudios))

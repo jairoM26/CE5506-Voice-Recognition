@@ -15,6 +15,7 @@ class AudioSignal:
         self.featuresMFCC = None
         self.filterbankFeatures = None        
         self.plotFlag = False
+        self.pow_frames = None
     
     '''
     @brief set the audio file name and directory (must be a .wav format)
@@ -107,7 +108,7 @@ class AudioSignal:
 
         NFFT = 512
         mag_frames = np.absolute(np.fft.rfft(frames, NFFT))  # Magnitude of the FFT
-        pow_frames = ((1.0 / NFFT) * ((mag_frames) ** 2))  # Power Spectrum
+        self.pow_frames = ((1.0 / NFFT) * ((mag_frames) ** 2))  # Power Spectrum
 
         nfilt = 40
         low_freq_mel = 0
@@ -126,7 +127,7 @@ class AudioSignal:
                 fbank[m - 1, k] = (k - bin[m - 1]) / (bin[m] - bin[m - 1])
             for k in range(f_m, f_m_plus):
                 fbank[m - 1, k] = (bin[m + 1] - k) / (bin[m + 1] - bin[m])
-        self.filterbankFeatures = np.dot(pow_frames, fbank.T)
+        self.filterbankFeatures = np.dot(self.pow_frames, fbank.T)
         self.filterbankFeatures = np.where(self.filterbankFeatures == 0, np.finfo(float).eps, self.filterbankFeatures)  # Numerical Stability
         self.filterbankFeatures = 20 * np.log10(self.filterbankFeatures)  # dB
         
@@ -154,7 +155,8 @@ class AudioSignal:
         plt.plot(time_axis, pSignal, color='blue')
         plt.xlabel(pXLabel)
         plt.ylabel(pYLabel)
-        plt.title(pTitle)
+        plt.title(pTitle)        
+        plt.show()
 
     def normalized_fb(self):
         self.filterbankFeatures -= (np.mean(self.filterbankFeatures, axis=0) + 1e-8)
@@ -171,16 +173,17 @@ class AudioSignal:
         pFeaturesMFCC = self.featuresMFCC.T
         plt.matshow(pFeaturesMFCC)
         #plt.imshow(np.flipud(pFeaturesMFCC.T), cmap=cm.jet, aspect=0.2, extent=[0,T,0,4])
-        plt.title('MFCC Features')
-        plt.savefig("./images/MFCC/"+self.fileName.split("/")[-1].split(".")[0].split("_")[0]+"_"+self.fileName.split("/")[-1].split(".")[0])
-
+        plt.title('MFCC Features '+self.fileName.split("/")[-1])
+        #plt.savefig("./images/MFCC/"+self.fileName.split("/")[-1].split(".")[0].split("_")[0]+"_"+self.fileName.split("/")[-1].split(".")[0])
+        plt.show()
     '''
     @brief plot the mfcc features
     @param pFeaturesMFCC the mfcc features
     '''
     def pltoFilterBankFeatures(self):
-        filterbankFeatures = self.filterbankFeatures.T
+        filterbankFeatures = self.filterbankFeatures
         plt.matshow(filterbankFeatures)
         #plt.imshow(np.flipud(filterbankFeatures.T), cmap=cm.jet, aspect=0.2, extent=[0,T,0,4])
-        plt.title('Filter bank')
+        plt.title('Filter bank '+self.fileName.split("/")[-1])
         plt.savefig("./images/FB/"+self.fileName.split("/")[-1].split(".")[0].split("_")[0]+"_"+self.fileName.split("/")[-1].split(".")[0])
+        plt.show()
