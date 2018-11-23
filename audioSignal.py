@@ -86,6 +86,10 @@ class AudioSignal:
         #   self.plotSignal('Frequency (kHz)', 'Signal power (dB)', 'Freq vs Power', 1000.0, lengthSignal, len_fts, 1, self.signalPower)
 
     '''
+    Frame the audio signal with the frame_side and frame_stride params
+    Then create the window with th numpy.hamming function
+    then apply the fft to the signal, and then power the signal **2
+    then it takes the filter blank and mfcc features
     '''
     def signalFeatures(self, frame_size, frame_stride):        
         # params
@@ -158,10 +162,15 @@ class AudioSignal:
         plt.title(pTitle)        
         plt.show()
 
+    '''
+    to normalize the mfcc features
+    '''
     def normalized_fb(self):
         self.filterbankFeatures -= (np.mean(self.filterbankFeatures, axis=0) + 1e-8)
 
-
+    '''
+    to normalize the filter blank features
+    '''
     def normalized_mfcc(self):
         self.featuresMFCC -= (np.mean(self.featuresMFCC, axis=0) + 1e-8)
 
