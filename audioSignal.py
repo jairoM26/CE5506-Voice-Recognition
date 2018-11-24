@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from scipy.io import wavfile
 from scipy.fftpack import dct
 from python_speech_features import mfcc, logfbank
+from matplotlib import cm
 
 '''
 @brief class to extract the characteristics of the audio file to analize
@@ -180,10 +181,10 @@ class AudioSignal:
     '''
     def pltoMFCCFeatures(self):
         pFeaturesMFCC = self.featuresMFCC.T
-        plt.matshow(pFeaturesMFCC)
-        #plt.imshow(np.flipud(pFeaturesMFCC.T), cmap=cm.jet, aspect=0.2, extent=[0,T,0,4])
+        #plt.matshow(pFeaturesMFCC)
+        plt.imshow(np.flipud(pFeaturesMFCC), cmap=cm.jet, aspect=0.2, extent=[0,3,0,12])
         plt.title('MFCC Features '+self.fileName.split("/")[-1])
-        #plt.savefig("./images/MFCC/"+self.fileName.split("/")[-1].split(".")[0].split("_")[0]+"_"+self.fileName.split("/")[-1].split(".")[0])
+        plt.savefig("./images/MFCC/"+self.fileName.split("/")[-1].split(".")[0].split("_")[0]+"_"+self.fileName.split("/")[-1].split(".")[0])
         plt.show()
     '''
     @brief plot the mfcc features
@@ -191,8 +192,8 @@ class AudioSignal:
     '''
     def pltoFilterBankFeatures(self):
         filterbankFeatures = self.filterbankFeatures
-        plt.matshow(filterbankFeatures)
-        #plt.imshow(np.flipud(filterbankFeatures.T), cmap=cm.jet, aspect=0.2, extent=[0,T,0,4])
+        #plt.matshow(filterbankFeatures)
+        plt.imshow(np.flipud(filterbankFeatures), cmap=cm.jet, aspect=0.2, extent=[0,3,0,12])
         plt.title('Filter bank '+self.fileName.split("/")[-1])
         plt.savefig("./images/FB/"+self.fileName.split("/")[-1].split(".")[0].split("_")[0]+"_"+self.fileName.split("/")[-1].split(".")[0])
         plt.show()
